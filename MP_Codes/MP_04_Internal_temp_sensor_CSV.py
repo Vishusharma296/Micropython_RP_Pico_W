@@ -1,5 +1,6 @@
 """
 This test script reads the internal temperature data of Pi Pico W
+also records the tmperature data as CSV file with PuTTy and USB connection
 
 Important data related to ADC:
 
