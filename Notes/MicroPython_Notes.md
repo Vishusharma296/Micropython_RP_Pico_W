@@ -15,4 +15,10 @@
 
 ### Important Commands in CLI for Micropython -------
 
-- help('modules') ---> Gives the list of available/installed modules on Microcontroller
+-  ---> Gives the list of available/installed modules on Microcontroller
+
+| Command             | Description |
+| -------------       | ------------- |
+| help('modules')     | Gives the list of available/installed modules on Microcontroller |
+
+
