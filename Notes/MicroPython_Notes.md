@@ -1,7 +1,6 @@
-## ----- MicroPython Notes ------
+## MicroPython Notes
 
-
-### ------ Useful libraries and Modules for Micro Python ------
+### Useful libraries and Modules for Micro Python
 
 - machine
 - os
@@ -17,13 +16,15 @@
 - usyncio
 
 
-#### ----------------- External libraries and modules ------------------
+#### External libraries and modules 
 
 - umqtt
 - BMP280, BME280
 - 
 
-### ------ Important Commands in CLI for Micropython -------
+<br>
+
+### Important Commands in CLI for Micropython
 
 
 | Command                  | Description |
@@ -32,33 +33,42 @@
 | machine.unique_id()      | Retrieves the unique identifier of the microcontroller (MAC addr, hardware specific information)|
 
 
-### -------------- Multi threading in Micro python ---------------
+### Concurrent programming in Micropython 
 
-Using Multi threading in MicroPython, you can divide a program into smaller tasks that can run concurrently, such as handling user input, performing background calculations, or communicating with external devices. if done correctly, these threads run independently of each other and can perform tasks simultaneously without blocking.
+There are two main ways of doing concurrent programming in MPy: 1) Multi Threading, 2) Event Driven programming. These methods differ in their underlying mechanisms and how they handle concurrency. 
 
-#### Keywords and Terminology
+#### Multithreading
+
+Multithreading involves executing multiple threads concurrently, where each thread represents a separate sequence of execution within the program. Threads can run in parallel on multicore processors or concurrently on single-core processors through time slicing. By using Multi threading in MicroPython, it is possible to divide a program into smaller tasks that can run concurrently. For example tasks such as handling user input, performing background calculations, or communicating with external devices. Another example of the use of multi-threading is when an IoT device needs to acquire sensor data and publish it to a server. These two tasks can run concurrently. If done correctly (with good concurrency design), these threads run independently of each other and perform tasks simultaneously without blocking. Multithreading enables true parallelism and can be beneficial for computationally intensive tasks or scenarios where true parallel execution is required.
+
+
+#### Event driven programming
+
+In event-driven programming, tasks are triggered by events or interrupts rather than being executed sequentially or concurrently. The program typically consists of an event loop that listens for events and dispatches tasks to handle them. Event-driven programming typically uses a single-threaded approach, where tasks are executed sequentially within the event loop. Tasks are executed cooperatively, with each task yielding control back to the event loop when waiting for I/O or other asynchronous operations. It is well-suited for applications that involve handling I/O-bound tasks or responding to external events quickly.
+
+
+#### Keywords and Terminology for concurrent programming
 
 - Event driven programming
-- cooperative vs preemtive multitasking
+- Multi-threading
+- Cooperative vs preemptive multithreading
 - Coroutines, Lightweight threads
 - Deadlocks
 - Race conditions
 - Asynchronous functions
 - Locks
-- Semaphores - semaphores can allow multiple threads to access a shared resource 
+- Semaphores 
 - Scheduling
 - Concurrency Primitives
 - Asynchronous I/O
 - Queues
-- Event flags
+- Event loops, Event flags, Event Handlers, Event Emitters
+- Awaitable Objects
 - Shared resources
+- Callbacks
 - Design of concurrency model
-- Scheduling
 
-
-#### ------------- Functions and code snippets related to multi-threading -------------------
-
-
+#### Functions and code snippets related to multithreading and event driven programming
 
 |  Functions                         | Description |
 | -------------                      | ------------- |
@@ -67,8 +77,8 @@ Using Multi threading in MicroPython, you can divide a program into smaller task
 | loop = uasyncio.get_event_loop()   | Creates an event loop |
 | loop.create_task(function1())      | Can create and schedule multiple tasks for multiple functions f1, f2...|
 | lock = _thread.allocate_lock()     | Create a lock object|
-| lock.acquire()                     | | 
-| lock.release()|| 
+| lock.acquire()                     | Method to acquire lock for threads | 
+| lock.release()                     | Method to release lock for threads | 
 
 
 
