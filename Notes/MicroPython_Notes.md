@@ -19,7 +19,7 @@
 #### External libraries and modules 
 
 - umqtt
-- BMP280, BME280
+- bmp280
 - 
 
 <br>
@@ -79,6 +79,10 @@ In event-driven programming, tasks are triggered by events or interrupts rather 
 | lock = _thread.allocate_lock()     | Create a lock object|
 | lock.acquire()                     | Method to acquire lock for threads | 
 | lock.release()                     | Method to release lock for threads | 
+
+### MQTT
+
+For running MQTT client on RP picoW use the library [umqtt.simple](https://github.com/micropython/micropython-lib/tree/master/micropython/umqtt.simple/umqtt)
 
 
 
