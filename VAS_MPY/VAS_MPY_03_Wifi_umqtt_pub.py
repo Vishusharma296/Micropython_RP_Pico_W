@@ -1,78 +1,72 @@
 '''
-This script tries to connects to Wifi with input credentials
-checks WLAN connection status and prints the IP address
-Tries establish the MQTT connection with broker
-If the connection is successfull it publishes JSON messages and flashes an led
-    
+This script connects to Wifi with input credentials
+Establish the MQTT connection with broker
+If the connection is successfull it publishes JSON messages and flashes an led 
 '''
 
-# Libraries and required modules
-import machine
 import network
-from time import sleep
 import utime
 from umqtt import MQTTClient
+import ujson
 
-led= machine.Pin('LED', machine.Pin.OUT)
-
-# Wifi Connection details (Give your wifi credentials here)
+# WiFi Connection Details
 
 SSID = "VISHU_WIFI"
 PASSWORD = "123456789"
 
-# MQTT Connection details
+# MQTT Connection Details
 
 MQTT_BROKER = "192.168.0.103"
 BROKER_PORT = 1883
 MQTT_TOPIC = "Pseudo/BMP280"
+CLIENT_ID = "pico_client"
 
-interval = 5
+# JSON message
 count = 0
+led= machine.Pin('LED', machine.Pin.OUT)
 
-# ---------- WiFi Connection ------------
 
-wlan = network.WLAN(network.STA_IF)
-wlan.active(True)
-wlan.connect(SSID, PASSWORD)
+# Function to connect to WiFi
 
-if wlan.status() != 3:
-    print('Connection failed....')
-else:
-    print('WLAN Connection status:', wlan.isconnected())
-    print('WLAN Staus code: ', wlan.status())
-    print('IP: ', wlan.ifconfig()[0])
+def connect_to_wifi(ssid, password):
+    wlan = network.WLAN(network.STA_IF)
+    wlan.active(True)
+    wlan.connect(SSID, PASSWORD)
+    while not wlan.isconnected():
+        pass
+    print("Connected to WiFi")
     
-    # Led flashing if WiFi is connected
-    
-while wlan.isconnected() == False:
-     print('Reconnecting to WLAN...')
-     sleep(10)
+# Function to connect to MQTT broker
 
-#----- Establish MQTT Connection
-     
-client = MQTTClient("pico_client", MQTT_BROKER)
-client.connect()
-print("Connected to MQTT Broker")
-     
-#--------Publishing to broker
-  
+def connect_to_mqtt():
+    client = MQTTClient(CLIENT_ID, MQTT_BROKER)
+    client.connect()
+    print("Connected to MQTT broker")
+    return client
+
+# Function to publish message
+
+def publish_message(client, message):
+    client.publish(MQTT_TOPIC, ujson.dumps(message))
+    print("Message published")
+
+
+# Main loop
+
+connect_to_wifi(SSID, PASSWORD)
+client = connect_to_mqtt()
+    
 while True:
-     
-    JSON_count = {
+        
+    Senor_data = {
+            
+        "Message counter": count,
+        "Message": "Sensor node running"
+        }
     
-    "Message Nr" : count,
-    "Message"    : "Pico working"
-    }
-    
-    client.publish(b"MQTT_TOPIC", b"JSON_count")
-    print("Publish successful", JSON_count)
+    publish_message(client, Sensor_data)
     count = count + 1
     led.value(1)
-    sleep(2)
+    utime.sleep(1)
     led.value(0)
-    sleep(3)
-    
-
-   
-
-
+    utime.sleep(9)  # Send message every 10 seconds
