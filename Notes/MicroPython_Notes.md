@@ -31,6 +31,7 @@
 | -------------            | ------------- |
 | help('modules')          | Gives the list of available/installed modules on Microcontroller |
 | machine.unique_id()      | Retrieves the unique identifier of the microcontroller (MAC addr, hardware specific information)|
+| Ctrl+L                   | Clear the python shell/terminal|
 
 
 ### Concurrent programming in Micropython 
